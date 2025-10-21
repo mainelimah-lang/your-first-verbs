@@ -55,20 +55,18 @@
 
     /* Header */
     header {
-      position: sticky;
-      top: 0;
+      position: relative;
       z-index: 100;
       padding: 2rem 1.5rem 1rem;
       max-width: 1200px;
       margin: 0 auto;
       text-align: center;
-      backdrop-filter: blur(8px);
-      background: rgba(15, 17, 18, 0.8);
+      background: var(--color-bg);
       border-bottom: 1px solid var(--color-border);
     }
 
     [data-theme='light'] header {
-      background: rgba(232, 221, 201, 0.8);
+      background: var(--color-bg);
     }
 
     h1 {
@@ -486,7 +484,8 @@
     // Theme Management
     function initTheme() {
       const savedTheme = localStorage.getItem('ztf-theme');
-      const theme = savedTheme || 'light';
+      const isMobile = window.innerWidth <= 768;
+      const theme = savedTheme || (isMobile ? 'light' : 'light');
       
       document.documentElement.setAttribute('data-theme', theme);
       updateThemeIcon(theme);
