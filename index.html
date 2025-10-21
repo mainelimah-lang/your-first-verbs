@@ -823,7 +823,7 @@
         return baseForm.toLowerCase().startsWith(letter.toLowerCase());
       });
       
-      console.log('Filtered verbs:', filteredVerbs.length);
+      console.log('Filtered verbs for', letter, ':', filteredVerbs.length, 'out of', allVerbs.length);
       
       render(filteredVerbs);
     }
