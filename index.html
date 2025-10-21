@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
   <title>Your First Verbs — ZTF Dictionary</title>
@@ -200,31 +200,31 @@
     }
 
     .emoji-col {
-      width: 60px;
+      width: 50px;
       text-align: center;
       font-size: 1.25rem;
     }
 
     .verb-col {
-      width: 180px;
+      width: 150px;
       font-weight: 600;
       font-size: 1rem;
     }
 
     .audio-col {
-      width: 120px;
+      width: 100px;
       text-align: center;
     }
 
     .transcription-col {
-      width: 140px;
+      width: 120px;
       font-family: 'Fira Code', monospace;
       font-size: 0.9em;
       color: var(--color-text-secondary);
     }
 
     .translation-col {
-      width: 200px;
+      width: 250px;
       font-size: 0.875rem;
       line-height: 1.4;
     }
@@ -453,8 +453,7 @@
     // Theme Management
     function initTheme() {
       const savedTheme = localStorage.getItem('ztf-theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      const theme = savedTheme || 'light';
       
       document.documentElement.setAttribute('data-theme', theme);
       updateThemeIcon(theme);
