@@ -229,6 +229,30 @@
       line-height: 1.4;
     }
 
+    .translation-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      color: var(--color-text-secondary);
+      padding: 4px;
+      margin-right: 8px;
+    }
+
+    .translation-toggle:hover {
+      color: var(--color-accent-purple);
+      transform: scale(1.1);
+    }
+
+    .translation-content {
+      display: none;
+    }
+
+    .translation-content.visible {
+      display: block;
+    }
+
     .audio-group {
       display: flex;
       align-items: center;
@@ -466,6 +490,14 @@
       icon.textContent = theme === 'dark' ? '🌙' : '☀️';
     }
 
+    // Translation Toggle Function
+    function toggleTranslation(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.classList.toggle('visible');
+      }
+    }
+
     // Audio Management
     function slugifyVerb(infinitive) {
       return infinitive
@@ -516,6 +548,7 @@
       const ipa = item['infinitive_phonetic_us'] || '';
       const literal = item['literal_translation'] || '';
       const contextual = item['contextual_translation'] || '';
+      const verbId = verb.toLowerCase().replace(/[^a-z0-9]/g, '');
 
       return `
         <tr>
@@ -535,8 +568,14 @@
             </div>
           </td>
           <td class="transcription-col">${ipa}</td>
-          <td class="translation-col">${literal}</td>
-          <td class="translation-col">${contextual}</td>
+          <td class="translation-col">
+            <button class="translation-toggle" onclick="toggleTranslation('${verbId}')" title="Show/hide literal translation">👁️</button>
+            <span class="translation-content" id="literal-${verbId}">${literal}</span>
+          </td>
+          <td class="translation-col">
+            <button class="translation-toggle" onclick="toggleTranslation('${verbId}-contextual')" title="Show/hide contextual translation">👁️</button>
+            <span class="translation-content" id="contextual-${verbId}">${contextual}</span>
+          </td>
         </tr>
       `;
     }
@@ -547,6 +586,7 @@
       const ipa = item['infinitive_phonetic_us'] || '';
       const literal = item['literal_translation'] || '';
       const contextual = item['contextual_translation'] || '';
+      const verbId = verb.toLowerCase().replace(/[^a-z0-9]/g, '');
 
       return `
         <div class="verb-card">
@@ -566,16 +606,18 @@
               <span class="flag">🇬🇧</span>
               <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'uk')" title="Play UK pronunciation">🔊</button>
               <span class="transcription-col">${ipa}</span>
-              </div>
-              </div>
+            </div>
+          </div>
           <div class="card-translations">
             <div class="trans-row">
+              <button class="translation-toggle" onclick="toggleTranslation('mobile-literal-${verbId}')" title="Show/hide literal translation">👁️</button>
               <div class="trans-label">Literal:</div>
-              <div>${literal}</div>
-              </div>
+              <span class="translation-content" id="mobile-literal-${verbId}">${literal}</span>
+            </div>
             <div class="trans-row">
+              <button class="translation-toggle" onclick="toggleTranslation('mobile-contextual-${verbId}')" title="Show/hide contextual translation">👁️</button>
               <div class="trans-label">Contextual:</div>
-              <div>${contextual}</div>
+              <span class="translation-content" id="mobile-contextual-${verbId}">${contextual}</span>
             </div>
           </div>
         </div>
