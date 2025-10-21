@@ -241,8 +241,8 @@
     }
 
     .speaker-btn {
-      background: var(--color-accent-purple);
-      border: none;
+      background: transparent;
+      border: 2px solid var(--color-border);
       border-radius: 50%;
       width: 40px;
       height: 40px;
@@ -252,11 +252,13 @@
       justify-content: center;
       font-size: 1rem;
       transition: all 0.3s ease;
-      color: white;
+      color: var(--color-text-secondary);
     }
 
     .speaker-btn:hover {
-      background: var(--color-accent-yellow);
+      background: var(--color-accent-purple);
+      border-color: var(--color-accent-purple);
+      color: white;
       transform: scale(1.1);
     }
 
