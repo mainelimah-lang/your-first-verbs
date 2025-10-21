@@ -99,7 +99,7 @@
     .search-container {
       position: relative;
       flex: 1;
-      max-width: none;
+      max-width: 1000px;
     }
 
     input[type="search"] {
@@ -807,8 +807,11 @@
       const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(item => {
         const verb = item.verb || item;
         const baseForm = verb.replace(/^To\s+/i, ''); // Remove "To " from beginning
+        console.log('Filtering:', letter, 'Verb:', verb, 'Base:', baseForm, 'Starts with:', baseForm.toLowerCase().startsWith(letter.toLowerCase()));
         return baseForm.toLowerCase().startsWith(letter.toLowerCase());
       });
+      
+      console.log('Filtered verbs:', filteredVerbs.length);
       
       render(filteredVerbs);
     }
