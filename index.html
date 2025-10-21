@@ -99,7 +99,7 @@
     .search-container {
       position: relative;
       flex: 1;
-      max-width: 400px;
+      max-width: none;
     }
 
     input[type="search"] {
@@ -501,7 +501,6 @@
       <div class="search-container">
       <input id="search" type="search" placeholder="Search verbs or translations…" />
       </div>
-      <span class="badge" id="count">0 verbs</span>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
         <span id="theme-icon">🌙</span>
       </button>
@@ -761,8 +760,6 @@
         return fields.includes(q);
       });
 
-      document.getElementById('count').textContent = `${filtered.length} verb${filtered.length !== 1 ? 's' : ''}`;
-
       // Render table (desktop)
       const rows = filtered.map(rowTemplate).join('');
       document.getElementById('rows').innerHTML = rows;
@@ -813,7 +810,6 @@
         },
         error: (err) => {
           console.error('CSV error', err);
-          document.getElementById('count').textContent = 'Error loading CSV';
         }
       });
     }
