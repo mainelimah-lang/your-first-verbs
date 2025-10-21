@@ -200,31 +200,31 @@
     }
 
     .emoji-col {
-      width: 50px;
+      width: 40px;
       text-align: center;
       font-size: 1.25rem;
     }
 
     .verb-col {
-      width: 150px;
+      width: 120px;
       font-weight: 600;
       font-size: 1rem;
     }
 
     .audio-col {
-      width: 100px;
+      width: 80px;
       text-align: center;
     }
 
     .transcription-col {
-      width: 120px;
-      font-family: 'Fira Code', monospace;
+      width: 100px;
+      font-family: 'Inter', sans-serif;
       font-size: 0.9em;
       color: var(--color-text-secondary);
     }
 
     .translation-col {
-      width: 250px;
+      width: 280px;
       font-size: 0.875rem;
       line-height: 1.4;
     }
@@ -421,7 +421,7 @@
     <h1>Your First Verbs</h1>
     <div class="header-controls">
       <div class="search-container">
-        <input id="search" type="search" placeholder="Search verbs or translations…" />
+      <input id="search" type="search" placeholder="Search verbs or translations…" />
       </div>
       <span class="badge" id="count">0 verbs</span>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
@@ -531,14 +531,14 @@
           <td class="audio-col">
             <div class="audio-group">
               <span class="flag">🇺🇸</span>
-              <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'us')" title="Play US pronunciation">▶️</button>
+              <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'us')" title="Play US pronunciation">🔊</button>
             </div>
           </td>
           <td class="transcription-col">${ipa}</td>
           <td class="audio-col">
             <div class="audio-group">
               <span class="flag">🇬🇧</span>
-              <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'uk')" title="Play UK pronunciation">▶️</button>
+              <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'uk')" title="Play UK pronunciation">🔊</button>
             </div>
           </td>
           <td class="transcription-col">${ipa}</td>
@@ -565,21 +565,21 @@
             <div class="pron-group">
               <span class="pron-label">US</span>
               <span class="flag">🇺🇸</span>
-              <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'us')" title="Play US pronunciation">▶️</button>
+              <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'us')" title="Play US pronunciation">🔊</button>
               <span class="transcription-col">${ipa}</span>
             </div>
             <div class="pron-group">
               <span class="pron-label">UK</span>
               <span class="flag">🇬🇧</span>
-              <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'uk')" title="Play UK pronunciation">▶️</button>
+              <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'uk')" title="Play UK pronunciation">🔊</button>
               <span class="transcription-col">${ipa}</span>
-            </div>
-          </div>
+              </div>
+              </div>
           <div class="card-translations">
             <div class="trans-row">
               <div class="trans-label">Literal:</div>
               <div>${literal}</div>
-            </div>
+              </div>
             <div class="trans-row">
               <div class="trans-label">Contextual:</div>
               <div>${contextual}</div>
