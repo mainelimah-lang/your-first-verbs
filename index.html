@@ -45,6 +45,21 @@
       .hide-sm{display:none}
       .ipa{display:block;margin-top:4px}
     }
+
+    /* --- List view (new) --- */
+    .list-wrap{margin-top:30px}
+    .list-head{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 10px}
+    .vlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:12px}
+    .vlist li{background:#fff;border-radius:var(--radius);box-shadow:0 2px 10px rgba(0,0,0,.06);padding:14px}
+    .item-row{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .em{font-size:22px;line-height:1}
+    .vverb{font-weight:800}
+    .meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .players{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    audio{height:30px}
+    .labels{display:grid;gap:6px;margin-top:8px}
+    .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+    .val{font-size:14px}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
@@ -59,6 +74,7 @@
   </header>
 
   <main>
+    <!-- Original TABLE (unchanged layout) -->
     <table>
       <thead>
         <tr>
@@ -72,6 +88,12 @@
       </thead>
       <tbody id="rows"></tbody>
     </table>
+
+    <!-- New LIST (full data with inline players) -->
+    <section class="list-wrap">
+      <h2 class="list-head">Full list</h2>
+      <ul id="vlist" class="vlist"></ul>
+    </section>
   </main>
 
   <footer>
@@ -100,4 +122,108 @@
 
     function play(infinitive, accent){
       const src = audioUrl(infinitive, accent);
+      const player = document.getElementById('player');
+      player.src = src;
+      player.play().catch(()=>{});
+    }
 
+    function rowTemplate(item){
+      const emoji = item['Emoji'] || '🔹';
+      const verb = item['infinitive_verb'] || '';
+      const ipa = item['infinitive_phonetic_us'] || '';
+      const literal = item['literal_translation'] || '';
+      const contextual = item['contextual_translation'] || '';
+
+      return `
+        <tr>
+          <td>${emoji}</td>
+          <td class="verb">${verb}</td>
+          <td class="ipa hide-sm">${ipa}</td>
+          <td class="actions">
+            <button class="play" onclick="play('${verb.replace(/'/g, "\'")}', 'us')"><span class="flag">🇺🇸</span>Play</button>
+            <button class="play" onclick="play('${verb.replace(/'/g, "\'")}', 'uk')"><span class="flag">🇬🇧</span>Play</button>
+          </td>
+          <td class="literal">${literal}</td>
+          <td class="context">${contextual}</td>
+        </tr>
+      `;
+    }
+
+    function listItemTemplate(item){
+      const emoji = item['Emoji'] || '🔹';
+      const verb = item['infinitive_verb'] || '';
+      const ipa = item['infinitive_phonetic_us'] || '';
+      const literal = item['literal_translation'] || '';
+      const contextual = item['contextual_translation'] || '';
+
+      const us = audioUrl(verb, 'us');
+      const uk = audioUrl(verb, 'uk');
+
+      return `
+        <li>
+          <div class="item-row">
+            <div class="em">${emoji}</div>
+            <div>
+              <div class="meta">
+                <div class="vverb">${verb}</div>
+                <div class="ipa">${ipa}</div>
+              </div>
+              <div class="players" aria-label="audio players">
+                <div><span class="flag">🇺🇸</span><audio controls preload="none" src="${us}"></audio></div>
+                <div><span class="flag">🇬🇧</span><audio controls preload="none" src="${uk}"></audio></div>
+              </div>
+              <div class="labels">
+                <div><span class="label">Literal:</span> <span class="val">${literal}</span></div>
+                <div><span class="label">Contextual:</span> <span class="val">${contextual}</span></div>
+              </div>
+            </div>
+          </div>
+        </li>
+      `;
+    }
+
+    function render(data){
+      const q = (document.getElementById('search').value || '').toLowerCase().trim();
+      const filtered = !q ? data : data.filter(it => {
+        const fields = [
+          it['Emoji'],
+          it['infinitive_verb'],
+          it['infinitive_phonetic_us'],
+          it['literal_translation'],
+          it['contextual_translation']
+        ].join(' ').toLowerCase();
+        return fields.includes(q);
+      });
+
+      document.getElementById('count').textContent = `${filtered.length} item${filtered.length!==1?'s':''}`;
+
+      // Table rows
+      const rows = filtered.map(rowTemplate).join('');
+      document.getElementById('rows').innerHTML = rows;
+
+      // List items
+      const items = filtered.map(listItemTemplate).join('');
+      document.getElementById('vlist').innerHTML = items;
+    }
+
+    function init(){
+      Papa.parse(CSV_URL, {
+        header: true,
+        download: true,
+        complete: (results) => {
+          const data = results.data.filter(Boolean);
+          const search = document.getElementById('search');
+          search.addEventListener('input', () => render(data));
+          render(data);
+        },
+        error: (err) => {
+          console.error('CSV error', err);
+          document.getElementById('count').textContent = 'Error loading CSV';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
