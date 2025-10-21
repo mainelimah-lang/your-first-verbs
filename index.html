@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Your First Verbs — ZTF Dictionary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#F7F3EC;
+      --fg:#0B0B0B;
+      --muted:#686868;
+      --accent:#5b5bd6;
+      --radius:14px;
+    }
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Inter,Helvetica,Arial,sans-serif}
+    header{padding:28px 20px 10px;max-width:1200px;margin:0 auto}
+    h1{margin:0 0 8px;font-size:28px;font-weight:800;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:14px}
+    .bar{display:flex;gap:10px;align-items:center;margin-top:16px}
+    input[type="search"]{
+      flex:1; padding:12px 14px; border:1px solid #ddd; border-radius:var(--radius);
+      font-size:14px; background:#fff;
+    }
+    .badge{font-size:12px;color:#fff;background:var(--accent);padding:6px 10px;border-radius:999px}
+    main{max-width:1200px;margin:16px auto 80px;padding:0 20px}
+    table{width:100%;border-collapse:separate;border-spacing:0 10px}
+    thead th{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);text-align:left;padding:0 10px}
+    tbody tr{background:#fff;border-radius:var(--radius);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    tbody td{padding:14px 10px;vertical-align:middle}
+    tbody td:first-child{width:44px;text-align:center}
+    .verb{font-weight:700}
+    .ipa{font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:13px; color:#444}
+    .literal{color:#111}
+    .context{color:#333}
+    .actions{display:flex;gap:8px;align-items:center}
+    button.play{
+      border:1px solid #ddd;background:#fff;border-radius:10px;padding:8px 10px;font-size:13px;cursor:pointer;
+    }
+    button.play:hover{border-color:#bbb}
+    .flag{font-size:16px;margin-right:6px}
+    .empty{color:#b00020;font-size:12px}
+    footer{max-width:1200px;margin:30px auto;padding:0 20px 40px;color:var(--muted);font-size:12px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media (max-width: 860px){
+      .hide-sm{display:none}
+      .ipa{display:block;margin-top:4px}
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Your First Verbs</h1>
+    <div class="sub">ZTF Dictionary — áudio 🇺🇸/🇬🇧, tradução literal e contextual.</div>
+    <div class="bar">
+      <input id="search" type="search" placeholder="Search verbs or translations…" />
+      <span class="badge" id="count">0 items</span>
+    </div>
+  </header>
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Emoji</th>
+          <th>Verb</th>
+          <th class="hide-sm">IPA</th>
+          <th>Audio</th>
+          <th>Literal</th>
+          <th>Contextual</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </main>
+
+  <footer>
+    Tip: arquivos de áudio ficam em <code>/audios</code> com nomes <code>to-verb.us.mp3</code> e <code>to-verb.uk.mp3</code>.
+  </footer>
+
+  <audio id="player" class="sr-only"></audio>
+
+  <script>
+    const CSV_URL = 'your_first_verbs.csv';
+    const AUDIO_BASE = './audios/';
+
+    function slugifyVerb(infinitive){
+      return infinitive
+        .toLowerCase()
+        .trim()
+        .replace(/^to\s+/, 'to-')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function audioUrl(infinitive, accent){
+      return `${AUDIO_BASE}${slugifyVerb(infinitive)}.${accent}.mp3`;
+    }
+
+    function play(infinitive, accent){
+      const src = audioUrl(infinitive, accent);
+
