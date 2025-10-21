@@ -91,9 +91,11 @@
       display: flex;
       gap: 1rem;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       flex-wrap: wrap;
       position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .search-container {
@@ -165,8 +167,9 @@
       flex-wrap: wrap;
       gap: 0.25rem;
       justify-content: center;
-      margin: 0.5rem 0;
+      margin: 0.5rem auto;
       padding: 0.5rem;
+      max-width: 1200px;
     }
 
     .alphabet-btn {
@@ -217,12 +220,15 @@
     .table-separator {
       height: 1px;
       background: var(--color-border);
-      margin: 1rem 0;
+      margin: 1rem auto;
+      max-width: 1200px;
     }
 
     /* Table Layout */
     table {
       width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
       border-collapse: collapse;
       margin-top: 1rem;
     }
