@@ -812,18 +812,19 @@
       });
       
       // Filter verbs by base form (without "To ")
-      const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(item => {
-        const verb = item.infinitive_verb || item.verb || item;
-        if (typeof verb !== 'string') {
-          console.log('Verb is not a string:', verb, typeof verb);
-          return false;
-        }
-        const baseForm = verb.replace(/^To\s+/i, ''); // Remove "To " from beginning
-        console.log('Filtering:', letter, 'Verb:', verb, 'Base:', baseForm, 'Starts with:', baseForm.toLowerCase().startsWith(letter.toLowerCase()));
-        return baseForm.toLowerCase().startsWith(letter.toLowerCase());
-      });
-      
-      console.log('Filtered verbs for', letter, ':', filteredVerbs.length, 'out of', allVerbs.length);
+      let filteredVerbs;
+      if (letter === 'all') {
+        filteredVerbs = allVerbs; // Show all verbs when "All" is selected
+      } else {
+        filteredVerbs = allVerbs.filter(item => {
+          const verb = item.infinitive_verb || item.verb || item;
+          if (typeof verb !== 'string') {
+            return false;
+          }
+          const baseForm = verb.replace(/^To\s+/i, ''); // Remove "To " from beginning
+          return baseForm.toLowerCase().startsWith(letter.toLowerCase());
+        });
+      }
       
       render(filteredVerbs);
     }
