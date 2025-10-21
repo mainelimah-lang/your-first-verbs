@@ -93,6 +93,7 @@
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
+      position: relative;
     }
 
     .search-container {
@@ -129,11 +130,14 @@
     }
 
     .theme-toggle {
+      position: absolute;
+      top: -2rem;
+      right: 0;
       background: var(--color-accent-purple);
       border: none;
       border-radius: 50%;
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -153,11 +157,53 @@
       transform: scale(0.95);
     }
 
-    /* Main Content */
-    main {
-      max-width: 1400px;
-      margin: 2rem auto 4rem;
-      padding: 0 1.5rem;
+    .alphabet-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--color-bg-secondary);
+      border-radius: 12px;
+      border: 1px solid var(--color-border);
+    }
+
+    .alphabet-btn {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      transition: all 0.3s ease;
+      min-width: 32px;
+      text-align: center;
+    }
+
+    .alphabet-btn:hover {
+      background: var(--color-accent-purple);
+      color: white;
+      border-color: var(--color-accent-purple);
+    }
+
+    .alphabet-btn.active {
+      background: var(--color-accent-purple);
+      color: white;
+      border-color: var(--color-accent-purple);
+    }
+
+    .alphabet-btn.all-btn {
+      background: var(--color-accent-yellow);
+      color: var(--color-text);
+      border-color: var(--color-accent-yellow);
+    }
+
+    .alphabet-btn.all-btn:hover {
+      background: var(--color-accent-purple);
+      color: white;
     }
 
     /* Table Layout */
@@ -181,6 +227,7 @@
     tbody tr {
       border-bottom: 1px solid var(--color-border);
       transition: all 0.3s ease;
+      height: 60px;
     }
 
     tbody tr:hover {
@@ -459,6 +506,36 @@
         <span id="theme-icon">🌙</span>
       </button>
     </div>
+    
+    <div class="alphabet-filters">
+      <button class="alphabet-btn all-btn active" onclick="filterByLetter('all')">All</button>
+      <button class="alphabet-btn" onclick="filterByLetter('a')">A</button>
+      <button class="alphabet-btn" onclick="filterByLetter('b')">B</button>
+      <button class="alphabet-btn" onclick="filterByLetter('c')">C</button>
+      <button class="alphabet-btn" onclick="filterByLetter('d')">D</button>
+      <button class="alphabet-btn" onclick="filterByLetter('e')">E</button>
+      <button class="alphabet-btn" onclick="filterByLetter('f')">F</button>
+      <button class="alphabet-btn" onclick="filterByLetter('g')">G</button>
+      <button class="alphabet-btn" onclick="filterByLetter('h')">H</button>
+      <button class="alphabet-btn" onclick="filterByLetter('i')">I</button>
+      <button class="alphabet-btn" onclick="filterByLetter('j')">J</button>
+      <button class="alphabet-btn" onclick="filterByLetter('k')">K</button>
+      <button class="alphabet-btn" onclick="filterByLetter('l')">L</button>
+      <button class="alphabet-btn" onclick="filterByLetter('m')">M</button>
+      <button class="alphabet-btn" onclick="filterByLetter('n')">N</button>
+      <button class="alphabet-btn" onclick="filterByLetter('o')">O</button>
+      <button class="alphabet-btn" onclick="filterByLetter('p')">P</button>
+      <button class="alphabet-btn" onclick="filterByLetter('q')">Q</button>
+      <button class="alphabet-btn" onclick="filterByLetter('r')">R</button>
+      <button class="alphabet-btn" onclick="filterByLetter('s')">S</button>
+      <button class="alphabet-btn" onclick="filterByLetter('t')">T</button>
+      <button class="alphabet-btn" onclick="filterByLetter('u')">U</button>
+      <button class="alphabet-btn" onclick="filterByLetter('v')">V</button>
+      <button class="alphabet-btn" onclick="filterByLetter('w')">W</button>
+      <button class="alphabet-btn" onclick="filterByLetter('x')">X</button>
+      <button class="alphabet-btn" onclick="filterByLetter('y')">Y</button>
+      <button class="alphabet-btn" onclick="filterByLetter('z')">Z</button>
+    </div>
   </header>
 
   <main>
@@ -695,6 +772,27 @@
       document.getElementById('cards').innerHTML = cards;
     }
 
+    let allVerbs = [];
+    let currentFilter = 'all';
+
+    // Alphabet filtering
+    function filterByLetter(letter) {
+      currentFilter = letter;
+      
+      // Update active button
+      document.querySelectorAll('.alphabet-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // Filter verbs
+      const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(verb => 
+        verb.toLowerCase().startsWith(letter.toLowerCase())
+      );
+      
+      render(filteredVerbs);
+    }
+
     function init() {
       // Initialize theme
       initTheme();
@@ -708,6 +806,7 @@
         download: true,
         complete: (results) => {
           const data = results.data.filter(Boolean);
+          allVerbs = data; // Store all verbs globally
           const search = document.getElementById('search');
           search.addEventListener('input', () => render(data));
           render(data);
