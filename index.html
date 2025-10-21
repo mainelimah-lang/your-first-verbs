@@ -129,10 +129,13 @@
       border: 1px solid var(--color-border);
     }
 
+    .table-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+
     .theme-toggle {
-      position: absolute;
-      top: -2rem;
-      right: 0;
       background: var(--color-accent-purple);
       border: none;
       border-radius: 50%;
@@ -502,9 +505,6 @@
       <div class="search-container">
       <input id="search" type="search" placeholder="Search verbs or translations…" />
       </div>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-        <span id="theme-icon">🌙</span>
-      </button>
     </div>
     
     <div class="alphabet-filters">
@@ -539,6 +539,12 @@
   </header>
 
   <main>
+    <div class="table-header">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <span id="theme-icon">🌙</span>
+      </button>
+    </div>
+    
     <!-- Desktop Table Layout -->
     <table>
       <tbody id="rows"></tbody>
@@ -783,10 +789,11 @@
       });
       event.target.classList.add('active');
       
-      // Filter verbs
-      const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(verb => 
-        verb.toLowerCase().startsWith(letter.toLowerCase())
-      );
+      // Filter verbs by base form (without "To ")
+      const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(verb => {
+        const baseForm = verb.replace(/^To\s+/i, ''); // Remove "To " from beginning
+        return baseForm.toLowerCase().startsWith(letter.toLowerCase());
+      });
       
       render(filteredVerbs);
     }
