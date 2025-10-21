@@ -33,34 +33,36 @@
     }
     .vlist li:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);border-color:#d4d4d4}
     .item-row{display:flex;gap:16px;align-items:flex-start}
-    .em{font-size:28px;line-height:1;flex-shrink:0}
+    .em{font-size:20px;line-height:1;flex-shrink:0}
     .content{flex:1;min-width:0}
-    .top{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+    .top{display:flex;align-items:center;gap:16px;margin-bottom:12px;flex-wrap:wrap}
     .vverb{font-size:18px;font-weight:600;letter-spacing:-.01em}
-    .ipa{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;font-size:13px;color:var(--muted)}
-    .audio-btns{display:flex;gap:8px;align-items:center;margin-left:auto}
-    .flag-btn{
-      background:none;border:none;padding:4px;cursor:pointer;font-size:22px;
-      opacity:.7;transition:all .2s;line-height:1;border-radius:6px;
+    .pronunciation{display:flex;align-items:center;gap:8px;margin-left:auto}
+    .pron-group{display:flex;align-items:center;gap:6px}
+    .region{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+    .speaker-btn{
+      background:none;border:none;padding:2px;cursor:pointer;font-size:16px;
+      opacity:.7;transition:all .2s;line-height:1;border-radius:4px;
     }
-    .flag-btn:hover{opacity:1;background:rgba(0,0,0,.04)}
-    .flag-btn:active{transform:scale(.9)}
+    .speaker-btn:hover{opacity:1;background:rgba(0,0,0,.04)}
+    .speaker-btn:active{transform:scale(.9)}
+    .ipa{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;font-size:13px;color:var(--muted)}
     .translations{display:grid;gap:8px;margin-top:12px}
     .trans-row{display:flex;gap:8px;font-size:14px;line-height:1.5}
     .trans-label{color:var(--muted);font-weight:500;min-width:70px;flex-shrink:0}
     .trans-value{color:var(--fg)}
     footer{max-width:900px;margin:40px auto;padding:0 24px 40px;color:var(--muted);font-size:13px;text-align:center}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media (max-width:640px){
-      header{padding:32px 20px 20px}
-      h1{font-size:26px}
-      main{padding:0 20px}
-      .vlist li{padding:16px 18px}
-      .em{font-size:24px}
-      .vverb{font-size:16px}
-      .audio-btns{margin-left:0;margin-top:4px}
-      .top{flex-wrap:wrap}
-    }
+      @media (max-width:640px){
+        header{padding:32px 20px 20px}
+        h1{font-size:26px}
+        main{padding:0 20px}
+        .vlist li{padding:16px 18px}
+        .em{font-size:18px}
+        .vverb{font-size:16px}
+        .pronunciation{margin-left:0;margin-top:8px;flex-wrap:wrap}
+        .top{flex-wrap:wrap}
+      }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
@@ -123,10 +125,17 @@
             <div class="content">
               <div class="top">
                 <div class="vverb">${verb}</div>
-                <div class="ipa">${ipa}</div>
-                <div class="audio-btns">
-                  <button class="flag-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'us')" title="US pronunciation">🇺🇸</button>
-                  <button class="flag-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'uk')" title="UK pronunciation">🇬🇧</button>
+                <div class="pronunciation">
+                  <div class="pron-group">
+                    <span class="region">UK</span>
+                    <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'uk')" title="UK pronunciation">🔊</button>
+                    <span class="ipa">${ipa}</span>
+                  </div>
+                  <div class="pron-group">
+                    <span class="region">US</span>
+                    <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'us')" title="US pronunciation">🔊</button>
+                    <span class="ipa">${ipa}</span>
+                  </div>
                 </div>
               </div>
               <div class="translations">
