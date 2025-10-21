@@ -790,7 +790,8 @@
       event.target.classList.add('active');
       
       // Filter verbs by base form (without "To ")
-      const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(verb => {
+      const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(item => {
+        const verb = item.verb || item;
         const baseForm = verb.replace(/^To\s+/i, ''); // Remove "To " from beginning
         return baseForm.toLowerCase().startsWith(letter.toLowerCase());
       });
