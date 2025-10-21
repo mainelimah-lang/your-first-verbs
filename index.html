@@ -136,18 +136,18 @@
     }
 
     .theme-toggle {
-      background: var(--color-accent-purple);
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      background: var(--color-bg);
+      border: 2px solid var(--color-border);
+      border-radius: 8px;
+      width: 44px;
+      height: 44px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(107, 78, 255, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .theme-toggle:hover {
@@ -208,6 +208,13 @@
     .alphabet-btn.all-btn:hover {
       background: var(--color-accent-purple);
       color: white;
+    }
+
+    /* Main Content */
+    main {
+      max-width: 1000px;
+      margin: 2rem auto 4rem;
+      padding: 0 1.5rem;
     }
 
     /* Table Layout */
@@ -787,7 +794,14 @@
       document.querySelectorAll('.alphabet-btn').forEach(btn => {
         btn.classList.remove('active');
       });
-      event.target.classList.add('active');
+      
+      // Find and activate the clicked button
+      document.querySelectorAll('.alphabet-btn').forEach(btn => {
+        if (btn.textContent.toLowerCase() === letter.toLowerCase() || 
+            (letter === 'all' && btn.classList.contains('all-btn'))) {
+          btn.classList.add('active');
+        }
+      });
       
       // Filter verbs by base form (without "To ")
       const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(item => {
