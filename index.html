@@ -99,7 +99,7 @@
     .search-container {
       position: relative;
       flex: 1;
-      max-width: 1000px;
+      max-width: 1200px;
     }
 
     input[type="search"] {
@@ -212,9 +212,15 @@
 
     /* Main Content */
     main {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 2rem auto 4rem;
       padding: 0 1.5rem;
+    }
+
+    .table-separator {
+      height: 1px;
+      background: var(--color-border);
+      margin: 1rem 0;
     }
 
     /* Table Layout */
@@ -513,6 +519,14 @@
       <input id="search" type="search" placeholder="Search verbs or translations…" />
       </div>
     </div>
+  </header>
+
+  <main>
+    <div class="table-header">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <span id="theme-icon">🌙</span>
+      </button>
+    </div>
     
     <div class="alphabet-filters">
       <button class="alphabet-btn" onclick="filterByLetter('a')">A</button>
@@ -543,14 +557,8 @@
       <button class="alphabet-btn" onclick="filterByLetter('z')">Z</button>
       <button class="alphabet-btn all-btn active" onclick="filterByLetter('all')">All</button>
     </div>
-  </header>
-
-  <main>
-    <div class="table-header">
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-        <span id="theme-icon">🌙</span>
-      </button>
-    </div>
+    
+    <div class="table-separator"></div>
     
     <!-- Desktop Table Layout -->
     <table>
@@ -805,7 +813,7 @@
       
       // Filter verbs by base form (without "To ")
       const filteredVerbs = letter === 'all' ? allVerbs : allVerbs.filter(item => {
-        const verb = item.verb || item;
+        const verb = item.infinitive_verb || item.verb || item;
         if (typeof verb !== 'string') {
           console.log('Verb is not a string:', verb, typeof verb);
           return false;
