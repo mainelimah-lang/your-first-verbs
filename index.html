@@ -157,7 +157,7 @@
 
     /* Main Content */
     main {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 2rem auto 4rem;
       padding: 0 1.5rem;
     }
@@ -165,8 +165,7 @@
     /* Table Layout */
     table {
       width: 100%;
-      border-collapse: separate;
-      border-spacing: 0 8px;
+      border-collapse: collapse;
       margin-top: 1rem;
     }
 
@@ -182,15 +181,11 @@
     }
 
     tbody tr {
-      background: var(--color-card);
-      border-radius: 12px;
+      border-bottom: 1px solid var(--color-border);
       transition: all 0.3s ease;
-      border: 1px solid var(--color-border);
     }
 
     tbody tr:hover {
-      transform: scale(1.01);
-      box-shadow: 0 0 20px var(--color-shadow);
       background: var(--color-hover);
     }
 
@@ -224,7 +219,7 @@
     }
 
     .translation-col {
-      width: 450px;
+      width: 500px;
       font-size: 0.875rem;
       line-height: 1.4;
     }
