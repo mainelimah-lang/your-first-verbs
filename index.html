@@ -798,6 +798,9 @@
     function filterByLetter(letter) {
       currentFilter = letter;
       
+      // Clear search input to avoid conflicts
+      document.getElementById('search').value = '';
+      
       // Update active button
       document.querySelectorAll('.alphabet-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -844,8 +847,17 @@
           const data = results.data.filter(Boolean);
           allVerbs = data; // Store all verbs globally
           const search = document.getElementById('search');
-          search.addEventListener('input', () => render(data));
-          render(data);
+          search.addEventListener('input', () => {
+            // Reset alphabet filter when searching
+            if (search.value.trim()) {
+              document.querySelectorAll('.alphabet-btn').forEach(btn => {
+                btn.classList.remove('active');
+              });
+              currentFilter = '';
+            }
+            render(allVerbs);
+          });
+          render(allVerbs);
         },
         error: (err) => {
           console.error('CSV error', err);
