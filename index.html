@@ -858,6 +858,11 @@
       const contextual = item['contextual_translation'] || '';
       const verbId = verb.toLowerCase().replace(/[^a-z0-9]/g, '');
 
+      // Debug log
+      if (verb === 'To afford') {
+        console.log('Debug afford:', { ipaUs, ipaUk, item });
+      }
+
       return `
         <tr>
           <td class="emoji-col">${emoji}</td>
