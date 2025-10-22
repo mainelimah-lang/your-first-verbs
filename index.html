@@ -861,6 +861,8 @@
       // Debug log
       if (verb === 'To afford') {
         console.log('Debug afford:', { ipaUs, ipaUk, item });
+        console.log('All keys in item:', Object.keys(item));
+        console.log('Raw infinitive_phonetic_uk:', item['infinitive_phonetic_uk']);
       }
 
       return `
