@@ -358,6 +358,51 @@
       gap: 1rem;
     }
 
+    .modal-pronunciation {
+      padding: 1rem;
+      background: var(--color-bg);
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    .modal-pronunciation .pron-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-pronunciation .flag {
+      font-size: 1.2rem;
+    }
+
+    .modal-pronunciation .speaker-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .modal-pronunciation .speaker-btn:hover {
+      background: var(--color-hover);
+    }
+
+    .modal-pronunciation .speaker-icon {
+      width: 16px;
+      height: 16px;
+      fill: var(--color-text);
+    }
+
+    .modal-pronunciation .transcription-col {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+    }
+
     .translation-item {
       padding: 1rem;
       background: var(--color-bg);
@@ -671,6 +716,26 @@
         <button class="modal-close" onclick="closeTranslationModal()">&times;</button>
       </div>
       <div class="modal-body">
+        <div class="modal-pronunciation">
+          <div class="pron-group">
+            <span class="flag">🇺🇸</span>
+            <button class="speaker-btn" id="modal-speaker-us" title="Play US pronunciation">
+              <svg class="speaker-icon" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </button>
+            <span class="transcription-col" id="modal-phonetic-us"></span>
+          </div>
+          <div class="pron-group">
+            <span class="flag">🇬🇧</span>
+            <button class="speaker-btn" id="modal-speaker-uk" title="Play UK pronunciation">
+              <svg class="speaker-icon" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </button>
+            <span class="transcription-col" id="modal-phonetic-uk"></span>
+          </div>
+        </div>
         <div class="translation-item">
           <div class="translation-label">Literal Translation</div>
           <div class="translation-text" id="modal-literal"></div>
@@ -712,12 +777,19 @@
     }
 
     // Translation Modal Functions
-    function openTranslationModal(verbId, verb, literal, contextual, event) {
+    function openTranslationModal(verbId, verb, literal, contextual, phoneticUs, phoneticUk, event) {
       if (event) event.preventDefault();
       
       document.getElementById('modal-verb-title').textContent = verb;
       document.getElementById('modal-literal').textContent = literal;
       document.getElementById('modal-contextual').textContent = contextual;
+      document.getElementById('modal-phonetic-us').textContent = phoneticUs;
+      document.getElementById('modal-phonetic-uk').textContent = phoneticUk;
+      
+      // Set up audio buttons
+      document.getElementById('modal-speaker-us').onclick = () => play(verb, 'us');
+      document.getElementById('modal-speaker-uk').onclick = () => play(verb, 'uk');
+      
       document.getElementById('translation-modal').classList.add('active');
     }
 
@@ -805,7 +877,7 @@
             </div>
           </td>
           <td class="translation-col">
-            <button class="translation-toggle" onclick="openTranslationModal('${verbId}', '${verb.replace(/'/g, "\\'")}', '${literal.replace(/'/g, "\\'")}', '${contextual.replace(/'/g, "\\'")}', event)" title="Show translations">
+            <button class="translation-toggle" onclick="openTranslationModal('${verbId}', '${verb.replace(/'/g, "\\'")}', '${literal.replace(/'/g, "\\'")}', '${contextual.replace(/'/g, "\\'")}', '${ipa}', '${ipa}', event)" title="Show translations">
               <svg class="eye-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
             </button>
           </td>
@@ -848,7 +920,7 @@
               </div>
               </div>
           <div class="card-translations">
-            <button class="translation-toggle" onclick="openTranslationModal('${verbId}', '${verb.replace(/'/g, "\\'")}', '${literal.replace(/'/g, "\\'")}', '${contextual.replace(/'/g, "\\'")}', event)" title="Show translations">
+            <button class="translation-toggle" onclick="openTranslationModal('${verbId}', '${verb.replace(/'/g, "\\'")}', '${literal.replace(/'/g, "\\'")}', '${contextual.replace(/'/g, "\\'")}', '${ipa}', '${ipa}', event)" title="Show translations">
               <svg class="eye-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
             </button>
           </div>
