@@ -1017,6 +1017,8 @@
         header: true,
         download: true,
         complete: (results) => {
+          console.log('CSV loaded:', results.data.length, 'rows');
+          console.log('First row:', results.data[0]);
           const data = results.data.filter(Boolean);
           allVerbs = data; // Store all verbs globally
           const search = document.getElementById('search');
