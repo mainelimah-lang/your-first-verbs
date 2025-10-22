@@ -379,7 +379,9 @@
       font-size: 1rem;
       width: 16px;
       height: 16px;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .modal-pronunciation .speaker-btn {
@@ -910,7 +912,7 @@
                 </svg>
               </button>
               <span class="transcription-col">${ipa}</span>
-            </div>
+              </div>
             <div class="pron-group">
               <span class="flag">🇬🇧</span>
               <button class="speaker-btn" onclick="play('${verb.replace(/'/g, "\\'")}', 'uk')" title="Play UK pronunciation">
