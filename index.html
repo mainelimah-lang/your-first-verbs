@@ -756,7 +756,7 @@
   </div>
 
   <script>
-    const CSV_URL = 'test.csv';
+    const CSV_URL = 'your_first_verbs.csv';
     const AUDIO_BASE = './audios/';
 
     // Theme Management
@@ -858,12 +858,6 @@
       const contextual = item['contextual_translation'] || '';
       const verbId = verb.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-      // Debug log
-      if (verb === 'To afford') {
-        console.log('Debug afford:', { ipaUs, ipaUk, item });
-        console.log('All keys in item:', Object.keys(item));
-        console.log('Raw infinitive_phonetic_uk:', item['infinitive_phonetic_uk']);
-      }
 
       return `
         <tr>
@@ -1023,9 +1017,6 @@
           return header.trim();
         },
         complete: (results) => {
-          console.log('CSV loaded:', results.data.length, 'rows');
-          console.log('First row:', results.data[0]);
-          console.log('Available columns:', Object.keys(results.data[0]));
           const data = results.data.filter(Boolean);
           allVerbs = data; // Store all verbs globally
           const search = document.getElementById('search');
